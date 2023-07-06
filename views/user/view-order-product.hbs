@@ -1,0 +1,110 @@
+<!-- user/view-order-products.hbs -->
+<style>
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s;
+    transition: transform 0.5s ease;
+    opacity: 0; /* Initially hide the card */
+    animation: fade-in 0.5s forwards; /* Apply the fade-in animation */
+  }
+
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  .badge {
+    font-size: 12px;
+    padding: 5px 8px;
+    background-color: #090a09;
+    color: #fff;
+    border-radius: 4px;
+  }
+
+  /* Fade-in animation */
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<div style="padding-top: 120px;" class="container d-flex justify-content-center">
+  <div class="card">
+    <div   class="card-body">
+      {{#each products}}
+      <div style="width: 800px;" class="row mb-3">
+        <div class="col-md-2">
+          <img class="card-img-top" style="width: 170px; height: 170px" src="{{this.product.photos.[2].fileName}}" alt="Product Image">
+        </div>
+        <div class="col-md-3 d-flex justify-content-center pt-5">
+          <span class="">Quantity: <b >{{this.quantity}}</b></span>
+         
+        </div>
+        <div class="col-md-4 d-flex justify-content-center pt-5">
+          <h5 class="card-title">{{this.product.name}}</h5>
+  
+</div>
+
+        <div class="col-md-3 d-flex justify-content-center pt-5">
+          <p class="card-text">Price: {{this.product.price}}</p>
+         
+
+        </div>
+      </div>
+      <hr>
+      
+      {{/each}}
+      
+   <div class="container  justify-content-end" >
+   
+   {{!-- Cart Tottal:<h1>{{orders.deliveryDetails.cartAmount}}</h1>
+   <h1>{{orders.deliveryDetails.couponDiscout}}</h1>
+   <h1>{{orders.totalAmount}}</h1> --}}
+{{!--  --}}
+                   <li class="list-group-item border-0 px-0 mb-3">
+        <div class="wallet-container">
+                   
+        <div class="d-flex flex-column">
+          {{!-- <div class="d-flex justify-content-between">
+            <span><strong>Cart Total:</strong></span>
+            <span>₹<span id="total">{{orders.deliveryDetails.cartAmount}}</span></span>
+          </div> --}}
+          <div class="d-flex justify-content-between">
+            <span><strong>Coupon savings:</strong></span>
+            <span style="color: green;"><span id="discount">-{{orders.deliveryDetails.couponDiscount}}</span></span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span><strong>Wallet savings:</strong></span>
+            <span style="color: green;"><span id="discount">-{{orders.deliveryDetails.walletDiscount}}</span></span>
+          </div>
+         
+          <div class="d-flex justify-content-between mt-2">
+            <span><strong>Order Total:</strong></span>
+            <span>₹<span id="totalPrice">{{orders.totalAmount}}</span></span>
+          </div>
+        </div>
+        <hr>
+        <p>payment-method</p>
+         <div class="d-flex justify-content-between">
+              {{#if  (eq  orders.paymentMethod "COD" )}}
+            <span><strong>Cash on Delivery:</strong></span>
+        
+            <span style="color: green;"><span id="discount">₹ {{orders.totalAmount}}</span></span>
+            {{else}}
+                <span><strong>Online:</strong></span>
+                <span style="color: green;"><span id="discount">₹ {{orders.totalAmount}}</span></span>
+              {{/if}}
+          </div>
+      </li>
+                  {{!--  --}}
+</div>
+      
+    </div>
+  </div>
+</div>

@@ -1,0 +1,148 @@
+<style>
+  .row.justify-content-start {
+    flex-wrap: wrap;
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+
+  .col-lg-3 {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .col-lg-9 {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .card-body {
+    flex-grow: 1;
+  }
+
+  .button-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .sidebar {
+    background-color: aliceblue;
+    padding: 15px;
+  }
+
+  .category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .category-list li {
+    margin-bottom: 10px;
+  }
+</style>
+
+<section style="background-color:aliceblue;margin-top: 50px;">
+  <div class="container-fluid py-5">
+    <div class="row">
+      <div class="col-lg-3">
+        <aside class="sidebar">
+          <h4>Categories</h4>
+          <ul class="category-list">
+            <li><input type="radio" id="all" name="category" value="all" onclick="filterProducts('all')">
+              <label for="all">All</label></li>
+            <li><input type="radio" id="Wall lamp" name="category" value="Wall lamp" onclick="filterProducts('Wall lamp')">
+              <label for="Wall lamp">Wall lamp</label></li>
+            <li><input type="radio" id="Table lamp" name="category" value="Table lamp" onclick="filterProducts('Table lamp')">
+              <label for="Table lamp">Table lamp</label></li>
+            <li><input type="radio" id="Floor lamp" name="category" value="Floor lamp" onclick="filterProducts('Floor lamp')">
+              <label for="Floor lamp">Floor lamp</label></li>
+          </ul>
+        </aside>
+      </div>
+
+      <div class="col-lg-9">
+       <!-- Search bar start -->
+        <div class="d-flex justify-content-end mt-3">
+          <form class="form-inline" action="/product-list" method="post">
+            <input style="width: 15rem" class="form-control mr-sm-2" type="search" name="search"
+              placeholder="Search by name, category" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+        <!-- Search bar end -->
+
+        <div class="row justify-content-start">
+          {{#each products}}
+          <div class="col-12 col-md-6 col-lg-4 mt-3 product-card" data-category="{{this.category}}"
+            data-price="{{this.price}}">
+            <div class="card">
+              <a href="/productdetails/{{this._id}}">
+                <img src="{{this.photos.[0].fileName}}" class="card-img-top" alt="...">
+              </a>
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <h5 class="card-category">{{this.category}}</h5>
+                </div>
+               <div class="d-flex justify-content-between">
+                  <h5 class="card-title">{{this.name}}</h5>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  {{#if this.offerPrice}}
+                  <h5 class="card-price"><del style="color: black;">Rs.{{this.price}}</del></h5>
+                  <br>
+                  <h5>Rs.{{this.offerPrice}}</h5>
+                  {{else}}
+                  <h5 class="card-price">Rs.{{this.price}}</h5>
+                  {{/if}}
+                </div>
+                <div class="button-container mr-4">
+                  <button onclick="addToCart('{{this._id}}')" class="btn btn-dark "> <i
+                      class="fas fa-shopping-cart"></i></button>
+                  <button type="button" class="btn btn-dark ml-5" onclick="addToWishlist('{{this._id}}')">
+                    <i class="fas fa-heart"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+        <div class="row">
+          <div class="col-12 mt-3">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="/product-list?p=1">1</a></li>
+                <li class="page-item"><a class="page-link" href="/product-list?p=2">2</a></li>
+                <li class="page-item"><a class="page-link" href="/product-list?p=3">3</a></li>
+                <li class="page-item"><a class="page-link" href="/product-list?p=4">4</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function filterProducts(category) {
+    const productCards = document.getElementsByClassName('product-card');
+
+    for (let i = 0; i < productCards.length; i++) {
+      const card = productCards[i];
+      const cardCategory = card.getAttribute('data-category');
+
+      if (category === 'all' || cardCategory === category) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    }
+  }
+</script>

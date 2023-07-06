@@ -1,0 +1,69 @@
+<section class="vh-100" style="background-color: #ffffff; height:94vh;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-md-7">
+                <div class="card" style="border-radius: 1rem;">
+                    <div class="row g-0 justify-content-center align-items-center">
+                        <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                            <div class="card-body p-4 p-lg-5 text-black">
+
+                                <form action="/otp" method="post">
+
+                                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Please enter your OTP
+                                    </h5>
+
+                                  
+                                     <div class="form-outline mb-4">
+                                        <input type="password" name="Email" class="form-control form-control-lg "
+                                            style="border-color: #231b1b;" required />
+                                        <label class="form-label" name="Email">Enter OTP</label>
+                                        <div class="invalid-feedback">
+                                            You have entered inncorect OTP.
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-success btn btn-dark btn-lg " style="width: 10rem;"
+                                            style="color: #ffff">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+
+    document.getElementById('loginForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent form submission
+
+        var emailInput = document.getElementById('form2Example17');
+        var passwordInput = document.getElementById('form2Example27');
+
+        if (emailInput.value === '') {
+            emailInput.setCustomValidity('Please enter an email address.');
+        } else {
+            emailInput.setCustomValidity('');
+        }
+
+        if (passwordInput.value === '') {
+            passwordInput.setCustomValidity('Please enter a password.');
+        } else {
+            passwordInput.setCustomValidity('');
+        }
+
+        if (this.checkValidity()) {
+
+            console.log('Form is valid');
+            // Uncomment the line below to submit the form
+            // this.submit();
+        }
+    });
+</script>

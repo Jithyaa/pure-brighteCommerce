@@ -1,0 +1,150 @@
+<style>
+ .card {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 1.2);
+}
+</style>
+
+<body>
+  <section style="background-color: #ffffff;margin-top: 100px;">
+    <div class="container py-5">
+      <div class="row">
+       <div class="col-lg-4">
+  <div class="card mb-4 shadow">
+    <div class="card-body text-center">
+      <img src="https://assets6.lottiefiles.com/avatars/300_5cee36c8ccfb9.jpg" alt="avatar"
+        class="rounded-circle img-fluid" style="width: 150px;">
+      <h5 class="my-3">{{user.Name}}</h5>
+      <div class="d-flex justify-content-center mb-2">
+        {{!-- <a style="font-size: x-small;" href="" type="button" class="btn btn-primary">Change Password</a> --}}
+        <a style="font-size: small;" href="#" type="button" class="btn btn-outline-primary ms-1 ml-2" data-toggle="modal"
+          data-target="#addAddressModal">Add Address</a>
+        <a style="font-size: small;" href="/order" type="button" class="btn btn-outline-warning ms-1 ml-2">Orders History</a>
+      </div>
+    </div>
+  </div> 
+   <div class="col-lg-8 ">
+  <div class="card mb-4 shadow">
+    <div class="card-body text-center">
+    <a style="font-size: small;" href="/wallet" type="button" class="btn btn-outline-primary ms-1 ml-2 mb-2">My Wallet</a>
+    {{!-- <a style="font-size: small;" href="/refferal-link" type="button" class="btn btn-outline-primary ms-1 ml-2">Referral Link</a> --}}
+    </div>
+  </div>
+  </div>
+</div>
+
+
+ 
+  
+
+
+
+
+
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Full Name</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{user.Name}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Email</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{user.Email}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                {{!-- <div class="col-sm-3">
+                  <p class="mb-0">Phone</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">(091) {{user.phone}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Mobile</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">(091) {{user.number}}</p>
+                </div> --}}
+              </div>
+             
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Delivery Addresses:</p>
+                </div>
+              </div>
+              
+              <div class="row ml-5" style="overflow-y: scroll; max-height: 380px;">
+                {{#each userAddresses}}
+                <div class="col-sm-9 mb-2">
+                  <hr>
+                  <h5>{{this.address.name}}</h5>
+                  <p class="text-muted mb-0">Address: {{this.address.address}}</p>
+                </div>
+                <div>
+                  <a href='/edit-address?id={{this._id}}' type="button" class="btn btn-dark mt-5">edit</a>
+                  <a href="/delete-profile-address?id={{this._id}}" type="button" class="btn btn-outline-danger mt-5">delete</a>
+                </div>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+                
+              </div>
+            
+
+<div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog" aria-labelledby="addAddressModalLabel"
+    aria-hidden="true">
+ 
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">Add New Address</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="modal-form" action="/add-new-address-profile" method="post">
+        
+            <input type="text" id="fullname" name="name" class="form-control" required />
+            <label class="form-label" style="color: black;">Full name</label>          
+            <input type="text" id="address" name="address" class="form-control" required />
+            <label class="form-label" style="color: black;">Address</label>          
+            <input type="text" id="pincode" name="pincode" class="form-control" required />
+            <label class="form-label" style="color: black;">Pincode</label>          
+            <input type="text" id="mobile" name="mobile" class="form-control" required />
+            <label class="form-label" style="color: black;">Mobile number</label>   
+            <input type="text" name="userId" value="{{user._id}}" hidden>       
+      </div>    
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Save Address</button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+
+</body>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Offers Page</title>
+  <style>
+    .container {
+      max-width: 700px;
+      
+     
+    }
+
+    .btn {
+      border-radius: 0;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .table-responsive {
+      border: none;
+    }
+
+    .table {
+      font-size: 14px;
+    }
+
+    .table thead th {
+      font-weight: bold;
+      vertical-align: middle;
+      color: #fff;
+      background-color: #343a40;
+      border-color: #343a40;
+    }
+
+    .table tbody td {
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+  <section>
+    <div class="container">
+      <div class="table-responsive mt-5">
+        <table class="table table-bordered table-hover" id="productsTable">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Category</th>
+              <th scope="col">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each category}}
+            <tr>
+              <td><strong>{{this.category}}</strong></td>
+              <td>
+                <form action="/admin/offers/{{this.category}}" method="post">
+                  <div class="form-group">
+                    <label for="offerPercentage">Offer Percentage</label>
+                    <input type="number" name="offerPercentage" class="form-control" id="offerPercentage" placeholder="Enter offer percentage">
+                  </div>
+                <button type="submit" class="btn btn-primary submitBtn">Submit</button>
+
+                </form>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <script>
+    const submitButtons = document.getElementsByClassName('submitBtn');
+    for (let i = 0; i < submitButtons.length; i++) {
+      submitButtons[i].addEventListener('click', function(event) {
+        event.preventDefault();
+
+        // Show SweetAlert confirmation message
+        Swal.fire({
+          title: 'Offer Added',
+          text: 'The offer has been successfully added',
+          icon: 'success'
+        });
+      });
+    }
+  </script>
+</body>
+
+</html>
+
+
+
+
+
+

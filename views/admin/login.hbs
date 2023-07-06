@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: hsl(0, 0%, 100%);
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-wrapper {
+      width: 30rem;
+      padding: 3rem;
+      border: 1px solid rgb(207, 199, 199);
+    }
+
+    h2 {
+      letter-spacing: 1px;
+      margin-bottom: 1.5rem;
+      font-weight: normal;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 16px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+    }
+
+    .error-message {
+      color: orangered;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      color: #fff;
+      background-color: #343a40;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #23272b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <form action="/admin/adminLogin" method="POST" class="form-wrapper">
+      {{#if loginErr}}
+      <p class="error-message">Invalid Username or Password</p>
+      {{/if}}
+      <h2>Admin Log In</h2>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="Email" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="Password" required />
+      </div>
+      <button class="btn" type="submit">Login</button>
+    </form>
+  </div>
+</body>
+</html>

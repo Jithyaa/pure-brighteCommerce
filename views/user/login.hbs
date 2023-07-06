@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+  <style>
+    body {
+      background-image: url('https://img.freepik.com/free-photo/loft-living-room-interior-design_53876-145499.jpg?w=740&t=st=1687082903~exp=1687083503~hmac=49e1e1b04a8278ac9fea99c3f0f4b97f1f5100d15d65cf1a2980e6af2bff38bf');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .card {
+      background-color: transparent;
+      border: none;
+      box-shadow: none;
+    }
+
+    .form-card {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .form-label {
+      color: #000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6 mt-5">
+        <div class="card form-card">
+          <div class="card-body py-5 px-md-5">
+            <form action="/login" method="post" id="loginForm" class="needs-validation" novalidate>
+              {{#if loginErr}}
+              <p class="error">{{loginErr}}</p>
+              {{/if}}
+              <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Login</h3>
+              <div class="form-outline mb-4">
+                <input type="email" name="Email" class="form-control" required />
+                <label class="form-label">Email address</label>
+              </div>
+              <div class="form-outline mb-4">
+                <input type="password" name="Password" class="form-control" required />
+                <label class="form-label">Password</label>
+              </div>
+              <div class="row mb-4">
+                <div class="col d-flex justify-content-center">
+                  <a href="/signup">Create a new account?</a>
+                </div>
+                {{!-- <div class="col">
+                  <a href="#!">Forgot password?</a>
+                </div> --}}
+              </div>
+              <button type="submit" class="btn btn-secondary btn-block mb-4">Sign in</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      if (!this.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      this.classList.add('was-validated');
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 10px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 12px;
+      border: none;
+      background-color: #4caf50;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .btn-danger {
+      background-color: #f44336;
+    }
+
+    .btn-primary {
+      background-color: #2196f3;
+    }
+
+    .btn:hover {
+      background-color: #555;
+    }
+
+    .table-container {
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="table-container">
+      <div class="row mt-4 mr-3">
+        <a href="/admin/add-category" class="btn btn-success ml-auto">Add Categories</a>
+      </div>
+
+      <table class="table mt-5" id="categoryTable">
+        <thead>
+          <tr>
+           
+            <th scope="col">Category</th>   
+            <th scope="col">Image</th>
+           
+            <th scope="col">Options</th>
+            
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each category}}
+          <tr>
+            <td>{{this.category}}</td>
+            <td><img style="width: 50px; height: 50px;" src="{{this.photos.[0].fileName}}" alt=""></td>
+            <td>{{this.offer}}</td>
+            <td>
+              {{!-- <a href="/admin/edit-category/{{this._id}}" class="btn btn-success">Apply offer</a> --}}
+              {{#if this.isHide}}
+                <a href="/admin/unhide-category/{{this._id}}" class="btn btn-primary" onclick="return confirm('Are you want to unhide {{this.category}}?')">Unhide</a>
+              {{else}}
+                <a href="/admin/hide-category/{{this._id}}" class="btn btn-danger" onclick="return confirm('Are you want to hide {{this.category}}?')">Hide</a>
+              {{/if}}
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ 

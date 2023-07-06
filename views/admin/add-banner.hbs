@@ -1,0 +1,42 @@
+<section>
+    <div class="container mt-4">
+        <div style="padding-top: 90px;padding-left:140px" class="row d-flex justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title text-center">Add a new Banner</h2>
+                        <form action="/admin/addBanner" method="POST" enctype="multipart/form-data" id="banner-form">
+                            <div class="form-group">
+                                <label for="image">Image</label>
+                                <input type="file" name="Image" class="form-control-file" id="image" required>
+                            </div>
+                            <button type="submit" class="btn btn-success mt-4">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.getElementById('banner-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        swal.fire({
+            title: "Confirmation",
+            text: "Are you sure you want to submit the form?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "OK",
+            cancelButtonText: "Cancel",
+            dangerMode: true,
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                document.getElementById('banner-form').submit();
+            }
+        });
+    });
+</script>

@@ -1,0 +1,246 @@
+{{#if emptyError}}
+<style>
+  .gradient-custom {
+    /* fallback for old browsers */
+    background: #302e2ee1;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, #302e2ee1, #302e2ee1);
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, #302e2ee1, #302e2ee1)
+  }
+</style>
+
+<div class="container-fluid mt-100" style="margin-top: 50px;">
+  <div class="row" id="cart-content">
+    <div class="col-md-12">
+      <div class="card-body cart">
+        <div class="col-sm-12 empty-cart-cls text-center">
+          <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3">
+          <h3><strong>Your Cart is Empty</strong></h3>
+          <h4>Add something to make me happy :)</h4>
+          <a href="/product-list" class="btn btn-primary cart-btn-transform m-3" data-abc="true">Continue Shopping</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+{{else}}
+
+<section class="h-100 gradient-custom" style="margin-top: 50px;">
+  <div class="container py-5" >
+    <div class="row d-flex justify-content-center my-4">
+      <div class="col-md-8">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0" id="cart-count">Cart {{cartCount}} items</h5>
+          </div>
+          <div class="card-body">
+            {{#each products}}
+            <!-- Single item -->
+            <div class="row">
+
+              <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                <!-- Image -->
+                <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                  <img src="{{this.product.photos.[0].fileName}}" class="w-100" alt="" />
+                  <a href="#!">
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                  </a>
+                </div>
+                <!-- Image -->
+              </div>
+
+              <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                <!-- Data -->
+                <p><strong>{{this.product.name}}</strong></p>
+                <td>
+                  <a href="#" class="btn btn-danger"
+                    onclick="showRemoveConfirmation('{{this._id}}', '{{this.product._id}}')">Remove</a>
+
+                </td>
+              </div>
+
+              <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <!-- Quantity -->
+                <div class="d-flex mb-4" style="max-width: 300px">
+                  {{!-- <button class="btn btn-primary px-3 me-2"
+                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                    <i class="fas fa-minus"></i>
+                  </button> --}}
+
+                  <div class="form-outline">
+
+                    <th scope="col">Quantity</th>
+                    <td>
+                      <button class="cart-item-count mr-3"
+                        onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)">-</button>
+                      <span id="{{this.product._id}}">{{this.quantity}}</span>
+                      <button class="cart-item-count ml-3"
+                        onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)">+</button>
+                    </td>
+                  </div>
+
+                </div>
+
+                <!-- Quantity -->
+
+                <!-- Price -->
+                <p class="text-start text-md-center">
+                  <strong>{{this.product.offerPrice}}</strong>
+                </p>
+                <!-- Price -->
+
+              </div>
+
+            </div>
+            {{/each}}
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-body">
+            <p><strong>Expected shipping delivery</strong></p>
+            <p class="mb-0">12.10.2020 - 14.10.2020</p>
+          </div>
+        </div>
+        <div class="card mb-4 mb-lg-0">
+          <div class="card-body">
+            <p><strong>We accept</strong></p>
+            <img class="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+              alt="Visa" />
+            <img class="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+              alt="American Express" />
+            <img class="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+              alt="Mastercard" />
+            {{!-- <img class="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.webp"
+              alt="PayPal acceptance mark" /> --}}
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-4">
+       
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0">Summary</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                Shipping
+                <span>Free</span>
+              </li>
+               
+              <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 ">
+                <div>
+                  <strong>CART TOTAL:</strong>
+                </div>
+                <div>
+                  <strong>Rs. <span id="total">{{total}}</span></strong>
+                </div>
+              </li>
+
+              {{!-- <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 ">
+                <div>
+                  <strong>DISCOUNT:</strong>
+                </div>
+                <div>
+                  <strong>Rs. <span id="discount">0</span></strong>
+                </div>
+              </li>
+
+              <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 ">
+                <div>
+                  <strong>PAYABLE AMOUNT:</strong>
+                </div>
+                <div>
+                  <strong>Rs. <span id="totalPrice">{{total}}</span></strong>
+                </div>
+              </li> --}}
+
+            </ul>
+
+            <a type="button" class="btn btn-dark btn-lg btn-block" href="/place-order">Go to Checkout</a>
+            </button>
+          </div>
+        </div>
+        {{/if}}
+        
+       
+
+      </div>
+
+    </div>
+  
+  </div>
+
+</section>
+<script>
+  function changeQuantity(cartId, proId, userId, count) {
+    let quantity = parseInt(document.getElementById(proId).innerHTML)
+    count = parseInt(count)
+    $.ajax({
+      url: '/change-product-quantity',
+      data: {
+        user: userId,
+        cart: cartId, 
+        product: proId,
+        count: count,
+        quantity: quantity
+      },
+      method: 'post',
+      success: (response) => {
+        if (response.removeProduct) {
+          alert("Product Removed from cart")
+          location.reload()
+        } else {
+
+          document.getElementById(proId).innerHTML = quantity + count
+          document.getElementById('total').innerHTML = response.total
+          document.getElementById('totalPrice').innerHTML = response.total
+          location.reload()
+        }
+      }
+    })
+  }
+  function removeProduct(cartId, proId) {
+    $.ajax({
+      url: '/remove-from-cart',
+      data: {
+        cart: cartId,
+        product: proId,
+      },
+      method: 'post',
+      success: (response) => {
+        alert("Product removed from Cart")
+        location.reload()
+      }
+    })
+  }
+  function showRemoveConfirmation(cartId, productId) {
+    Swal.fire({
+      title: 'Are you sure you want to remove the product?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Remove',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeProduct(cartId, productId);
+      }
+    });
+  }
+
+ 
+</script>

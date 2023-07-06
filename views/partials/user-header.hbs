@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+  <title>Your Page Title</title>
+</head>
+
+<body>
+  <header>
+    <nav style="background-color:rgba(0, 0, 0, 0.6);" class="navbar navbar-expand-lg navbar-light fixed-top">
+      {{!-- <button onclick="goBack()" style="color:white; background-color: transparent; border: none; cursor: pointer; margin-right: 10px;">
+        Back
+      </button> --}}
+
+      <a class="navbar-brand" href="/" style="font-size: x-large; font-weight:bold; color:white; margin-left:30px ">Pure Bright</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+        aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+
+      <div class="collapse navbar-collapse mr-5" id="navbarTogglerDemo02">
+        <ul class="navbar-nav ml-auto">
+      
+          <li style="margin-bottom:11px;" class="nav-item">
+            <a class="nav-link" href="/product-list" style="color:white">shop now</a>
+          </li>
+          <li class="nav-item dropdown">
+                        <a style="color: #fff;" class="nav-link dropdown-toggle ml-2" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account </a>
+                        <div style="background-color: rgba(0, 0, 0,0.7) ; color: ;" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a style="color: #cdc9c9d2;" class="dropdown-item" href="/order">My Orders</a>
+                            <a style="color: #cdc9c9d2;" class="dropdown-item" href="/user-profile">My Account</a>
+                            <a style="color: #cdc9c9d2;;" class="dropdown-item" href="/wishlist">My Wishlist</a>
+                            <a style="color: #cdc9c9d2;;" class="dropdown-item" href="/wallet">My Wallet</a>
+                            {{!-- <a style="color: #cdc9c9d2;;" class="dropdown-item" href="/error-page">Contact Us</a> --}}
+                        </div>
+                    </li>
+          {{!-- <li style="margin-bottom:11px;" class="nav-item">
+            <a class="nav-link" href="/wishlist" style="color:white">Wishlist</a>
+          </li> --}}
+          <li style="margin-bottom:11px;" class="nav-item">
+            <a class="nav-link" href="/cart" style="color:rgb(0, 0, 0)"><i class="fas fa-shopping-cart"></i><span class="badge badge-success" id="cart-count">{{cartCount}}</span></a>
+          </li>
+          {{!-- <li style="margin-bottom:11px;" class="nav-item">
+            <a class="nav-link" href="/order" style="color:white">Orders</a>
+          </li> --}}
+        
+
+        </ul>
+      </div>
+
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle mr-3" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          {{#if user}}
+          {{user.Name}}
+          {{else}}
+          Account
+          {{/if}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {{#if user}}
+          <a class="dropdown-item" href="/logout">Logout</a>
+          {{else}}
+          <a class="dropdown-item" href="/login">Login</a>
+          {{!-- <a class="dropdown-item" href="/admin">Admin</a> --}}
+          {{/if}}
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Your page content here -->
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  {{!-- <script>
+    function goBack() {
+      window.history.back();
+    }
+  </script> --}}
+</body>
+
+</html>
+

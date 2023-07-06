@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Order Summary</title>
+  <style>
+    /* CSS styles for the order summary page */
+
+    h3 {
+      text-align: center;
+      margin-top: 80px;
+      /* Add top margin to position the heading lower */
+    }
+
+    .order-container {
+      background-color: #f4f4f4;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 8px auto;
+      /* Adjust margin to center the section */
+      width: 600px;
+    }
+
+    .order-details {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .order-details span {
+      font-weight: bold;
+    }
+
+    .view-products-link {
+      display: inline-block;
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 5px 10px;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .view-products-link:hover {
+      background-color: #45a049;
+    }
+  .sorting-options {
+  text-align:right;
+
+}
+
+.sorting-options label {
+  margin-right: 10px;
+}
+  </style>
+</head>
+
+<body>
+  <h3>Order Summary</h3>
+
+  {{!-- <form action="download-invoice" method="post">
+    <button class="btn btn-outline-success ml-3 " type="submit">Download</button>
+  </form> --}}
+
+ 
+  <div id="order-list">
+    {{#each orders}}
+    <div class="order-container">
+      <div class="order-details">
+        <span>Date:</span>
+        <span>{{this.date}}</span>
+      </div>
+      <div class="order-details">
+        <span>Address:</span>
+        <span>{{this.deliveryDetails.address}}</span>
+      </div>
+      <div class="order-details">
+        <span>Amount:</span>
+        <span>{{this.totalAmount}}</span>
+      </div>
+      <div class="order-details">
+        <span>Payment:</span>
+        <span>{{this.paymentMethod}}</span>
+      </div>
+      <div class="order-details">
+        <span>Status:</span>
+        <span>{{this.status}}</span>
+      </div>
+      <div class="order-details">
+        <a href="/view-order-product/{{this._id}}" class="view-products-link">View Products</a>
+      </div>
+      <div>
+        {{#if (eq this.status "placed")}}
+        <a href="/cancel-order?id={{this._id}}&&st=Cancelled" id="cancel-btn" type="button"
+          class="btn btn-danger mt-1">Cancel</a>
+        {{/if}}
+        {{#if (eq this.status "Shipped")}}
+        <a href="/cancel-order?id={{this._id}}&&st=Cancelled" type="button" class="btn btn-danger mt-1">Cancel</a>
+        {{/if}}
+        {{#if (eq this.status 'Delivered')}}
+        <div>
+  <a href="/return-order?id={{this._id}}&&st=Return" style="width: 7rem;" class="btn btn-danger mt-2"
+    onclick="showReturnConfirmation(event)">Return</a>
+</div>
+        {{/if}}
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
+  <script>
+    
+    document.getElementById('cancel-btn').addEventListener('click', function (event) {
+    event.preventDefault(); // Prevent the default behavior of the link
+
+    // Display the confirmation dialog using SweetAlert
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You are about to cancel the order.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // If the user confirms, redirect to the cancel order URL
+        window.location.href = event.target.href;
+        // Show a success message after the order is canceled
+        Swal.fire('Order Canceled', 'Your order has been successfully canceled.', 'success');
+      }
+    });
+  });
+
+  function showReturnConfirmation(event) {
+    event.preventDefault(); // Prevent the default link behavior
+
+    // Show SweetAlert confirmation message
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to return this order?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // If the user clicks "Yes", proceed with the return
+        window.location.href = event.target.href;
+      }
+    });
+  }
+  </script>
+
+  
+
+</body>
+
+</html>

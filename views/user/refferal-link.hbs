@@ -1,0 +1,114 @@
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: rgb(255, 255, 255);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 500px;
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #0c0e0c;
+    }
+
+    p {
+      font-size: 18px;
+      color: #555555;
+      margin-bottom: 30px;
+    }
+
+    .link {
+      margin-top: 30px;
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .result-link {
+      color: #0000ff;
+      word-wrap: break-word;
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      transition: color 0.3s;
+      text-decoration: none;
+    }
+
+    .result-link:hover {
+      color: #7c4dff;
+    }
+
+    .copy-btn {
+      padding: 12px 24px;
+      background-color: #0c0e0c;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: 16px;
+    }
+
+    .copy-btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Earn ₹100!</h1>
+    <p>Invite your friends to Pure Bright and get ₹100 cashback</p>
+    <div class="link">
+      <strong>Your referral link:</strong>
+      <a class="result-link" target="_blank"></a>
+      <button class="copy-btn">Copy Link</button>
+    </div>
+  </div>
+</body>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var referralCode = "{{users.referralCode}}";
+      var link = "http://localhost:4000/signup?referral_code=" + encodeURIComponent(referralCode);
+      var linkElement = document.querySelector(".result-link");
+      linkElement.textContent = link;
+      linkElement.href = link;
+    });
+
+    var copyBtn = document.querySelector(".copy-btn");
+    copyBtn.addEventListener("click", function() {
+      var link = document.querySelector(".result-link").href;
+      copyToClipboard(link);
+    });
+
+    function copyToClipboard(text) {
+      var tempInput = document.createElement("input");
+      tempInput.setAttribute("value", text);
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
+      alert("Link copied to clipboard!");
+    }
+  </script>
+</body>
+
+</html>

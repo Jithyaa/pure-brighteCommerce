@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  {{!-- <title>Admin Panel</title>  --}}
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css">
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 5px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h3 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 12px;
+      border: none;
+      background-color: #4caf50;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .btn-danger {
+      background-color: #f44336;
+    }
+
+    .btn-primary {
+      background-color: #2196f3;
+      margin-bottom: 10px;
+    }
+
+    .btn:hover {
+      background-color: #555;
+    }
+
+    .table-container {
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f5f5f5;
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .form-inline {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .form-inline input[type="search"] {
+      width: 15rem;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container mt-3">
+    <h3>All Products</h3>
+    <div class="table-container">
+      <div class="row mt-4">
+        <a href="/admin/add-products" class="btn btn-success ml-auto mr-3 mb-2">Add Product</a>
+      </div>
+
+      {{!-- search bar start--}}
+      <div class="d-flex justify-content-end mt-3" style="padding-left: 50px;">
+        <form class="form-inline" action="/admin" method="post">
+          <input style="width: 15rem" class="form-control mr-sm-2 d-inline" type="search" name="search"
+            placeholder="Search by name, category" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0 d-inline" type="submit">Search</button>
+        </form>
+      </div>
+      {{!-- search bar end --}}
+
+      <table class="table mt-5" id="productTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Image</th>
+            <th >Options</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each products}}
+          <tr>
+            <td>{{this.name}}</td>
+            <td>{{this.category}}</td>
+            <td>{{this.description}}</td>
+            <td>{{this.price}}</td>  
+            
+           
+            {{#each this.photos}}
+            <td><img src="{{this.fileName}}" alt=""></td>
+             
+            {{/each}}
+          
+            <td class="text-center">
+              <a href="/admin/edit-product/{{this._id}}" class="btn btn-primary">Edit</a>
+             <a href="/admin/delete-product/{{this._id}}" class="btn btn-danger"
+   data-product-name="{{this.name}}" onclick="showDeleteConfirmation(event)">Delete</a>
+
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="/admin?p=1">1</a></li>
+          <li class="page-item"><a class="page-link" href="/admin?p=2">2</a></li>
+          <li class="page-item"><a class="page-link" href="/admin?p=3">3</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
+
+  <script>
+  function showDeleteConfirmation(event) {
+    event.preventDefault();
+
+    // Extract the product name from the HTML element
+    const productName = event.target.getAttribute('data-product-name');
+
+    // Show SweetAlert confirmation message
+    Swal.fire({
+      title: 'Delete Product',
+      text: `Are you sure you want to delete ${productName}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // If the user clicks "Yes", proceed with the deletion
+        showSuccessMessage();
+        window.location.href = event.target.href;
+      }
+    });
+  }
+
+  function showSuccessMessage() {
+    // Show success message with SweetAlert
+    Swal.fire({
+      title: 'Deleted',
+      text: 'The product has been successfully deleted',
+      icon: 'success'
+    });
+  }
+</script>
+</body>
+
+</html>

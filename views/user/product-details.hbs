@@ -1,0 +1,252 @@
+<body>
+  <style>
+    * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+ 
+  }
+  
+  body {
+    font-family: sans-serif;
+    background:  #f1f1f1; 
+    
+  }
+  
+  .container {
+    max-width: 75%;
+    margin: auto;
+    height: 80vh;
+    margin-top: 5%;
+   background: white;
+    box-shadow: 5px 5px 10px 3px rgba(0, 0, 0, 0.3);
+    margin-top: 100px;
+  }
+  
+  .left, .right {
+    width: 50%;
+    padding: 30px;
+  }
+  
+  .flex {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .flex1 {
+    display: flex;
+  }
+  
+  .main_image {
+      max-width: 100%;
+      height: auto;
+      display: flex;
+      justify-content: center;
+    }
+
+    .slide {
+      max-width: 100%;
+      height: auto;
+    }
+  
+  .option img {
+    width: 75px;
+    height: 75px;
+    padding: 10px;
+  }
+  
+  .right {
+    padding: 50px 100px 50px 50px;
+  }
+  
+  h3 {
+    color: #af827d;
+    margin: 20px 0 20px 0;
+    font-size: 25px;
+  }
+  
+  h5,
+  p,
+  small {
+    color: #837D7C;
+  }
+  
+  h4 {
+    color: rgb(0, 0, 0);
+  }
+  
+  p {
+    margin: 20px 0 50px 0;
+    line-height: 25px;
+  }
+  
+  h5 {
+    font-size: 15px;
+  }
+  
+  label,
+  .add span,
+  .color span {
+    width: 25px;
+    height: 25px;
+    background: #000;
+    border-radius: 50%;
+    margin: 20px 10px 20px 0;
+  }
+  
+
+  
+  .add label,
+  .add span {
+    background: none;
+    border: 1px solid #C1908B;
+    color: #C1908B;
+    text-align: center;
+    line-height: 25px;
+  }
+  
+  .add label {
+    padding: 10px 30px 0 20px;
+    border-radius: 50px;
+    line-height: 0;
+  }
+  
+  button.carted {
+    width: 80px;
+    padding: 10px;
+    border: none;
+    outline: none;
+    background: #4c74d2;
+    color: white;
+    
+    border-radius: 30px;
+  }
+  
+  @media only screen and (max-width:768px) {
+    .container {
+      max-width: 90%;
+      margin: auto;
+      height: auto;
+    }
+  
+    .left, .right {
+      width: 100%;
+    }
+  
+    .container {
+      flex-direction: column;
+    }
+  }
+  
+  @media only screen and (max-width:511px) {
+    .container {
+      max-width: 100%;
+      height: auto;
+      padding: 10px;
+    }
+  
+    .left, .right {
+      padding: 0;
+    }
+  
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  
+    .option {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+  }
+      @media only screen and (max-width: 511px) {
+      /* Add this media query to disable zoom effect on mobile screens */
+      .container {
+        pointer-events: none;
+      }
+
+      .option img {
+        pointer-events: auto;
+      }
+    }
+
+  </style>
+  <section>
+    <div class="container flex">
+      <div class="left">
+        <div class="main_image" id="img-container">
+          <img src="{{this.product.photos.[0].fileName}}"  class="slide" style="width: 100%;"   data-zoom-image="{{this.product.photos.[0].fileName}}">
+        </div>
+        <div class="option flex">
+          <img src="{{this.product.photos.[0].fileName}}" onclick="img(this.src)">
+          <img src="{{this.product.photos.[1].fileName}}"  onclick="img(this.src)">
+          <img src="{{this.product.photos.[2].fileName}}"  onclick="img(this.src)">
+        </div>
+      </div>
+      <div class="right">
+        <h2><b>{{product.name}}</b></h2>
+       {{#if product.offerPrice}}
+        <h4><small>Rs.</small>{{product.offerPrice}}</h4>
+        <h5><s>Rs.{{product.price}}</s></h5>
+        {{else}}
+        <h4><small>Rs.</small>{{product.price}}</h4>
+        {{/if}}
+        <p><i>{{product.description}}</i> </p>
+           <button onclick="addToCart('{{product._id}}')"  class="btn btn-dark"  ><i class="fas fa-shopping-cart"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    function img(anything) {
+      document.querySelector('.slide').src = anything;
+    }
+
+    function change(change) {
+      const line = document.querySelector('.home');
+      line.style.background = change;
+    }
+  </script>
+  <script>
+    function img(anything) {
+      var slide = document.querySelector('.slide');
+      slide.src = anything;
+      slide.dataset.zoomImage = anything;
+    }
+
+    function change(change) {
+      var line = document.querySelector('.home');
+      line.style.background = change;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      var options = {
+        width: 340,
+        height: 330,
+        zoomWidth: 400,
+        offset: { vertical: 20, horizontal: 15 }
+      };
+      new ImageZoom(document.getElementById("img-container"), options);
+
+      var optionImages = document.querySelectorAll('.option img');
+      optionImages.forEach(function(image) {
+        image.addEventListener('click', function() {
+          var mainImage = document.querySelector('.slide');
+          mainImage.src = this.src;
+          mainImage.dataset.zoomImage = this.dataset.zoomImage;
+          new ImageZoom(document.getElementById("img-container"), options);
+        });
+      });
+    });
+  </script>
+
+
+</body>
+
+
+
+
+
+
+

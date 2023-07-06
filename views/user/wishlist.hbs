@@ -1,0 +1,125 @@
+{{#if emptyError}}
+
+<style>
+  .gradient-custom {
+    /* fallback for old browsers */
+    background: rgba(21, 21, 21, 1);
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgb(168, 156, 218), rgba(11, 11, 11));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(168, 156, 218), rgb(168, 156, 218))
+  
+  }
+  
+</style>
+
+<body>
+  <div style="margin-top: 50px;" class="container-fluid ">
+    <div class="row" id="cart-content">
+      <div class="col-md-12">
+        <div class="card-body cart">
+          <div class="col-sm-12 empty-cart-cls text-center">
+            <img
+              src="https://media.istockphoto.com/id/1323438316/vector/shopping-wish-list-icon-vector-illustration-shopping-wish-list-with-love-shape-icon-design.jpg?s=170667a&w=0&k=20&c=PMi1Z5X4bE6YzV6Wol7_CLccc7cvXVeRdUssBYLOz04="
+              width="130" height="130" class="img-fluid mb-4 mr-3">
+            <h3><strong>Your wishlist is Empty</strong></h3>
+            <h4>Add something to make me happy..!</h4>
+            <a href="/product-list" class="btn btn-primary cart-btn-transform m-3" data-abc="true">Continue
+              Shopping</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{{else}}
+<section class="h-100 gradient-custom">
+  <div class="container py-5 mt-5">
+    <div class="row d-flex justify-content-center my-4">
+      <div class="col-md-8">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0"><strong>Your Wishlist</strong></h5>
+          </div>
+          {{#each list.products}}
+          <div class="card-body">
+            <!-- Single item -->
+            <div class="row">
+              <!-- Image -->
+              <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                   
+                  <img src="{{this.itemphotos.[0].fileName}}" class="w-100" alt="pure bright" />
+                   
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                 
+                </div>
+              </div>
+              <!-- Image -->
+              <!-- Data -->
+              <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                <p><strong>{{this.itemName}}</strong></p>
+                <button type="button" class="btn btn-outline-danger"
+                  onclick="removeProduct('{{../list._id}}', '{{this.item}}')">Remove</button>
+                  {{!-- <button onclick="addToCart('{{../list._id}}','{{this.item}}')" class="btn bg-cart"><i class="fa fa-cart-plus mr-2"></i> Add to cart</button> --}}
+                    <button type = "button"class="btn btn-outline-warning ml-2"onclick="addToCart('{{this.item}}')">
+              Add to Cart <i class = "fas fa-shopping-cart"></i>
+            </button>
+                   
+              </div>
+              <!-- Data -->
+              <!-- Quantity and Price -->
+              <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <p style="margin-top: 5rem;" class="text-start text-md-center ">
+                  <strong>Rs.{{this.itemPrice}}</strong>
+                </p>
+              </div>
+              <!-- Quantity and Price -->
+            </div>
+            <!-- Single item -->
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{{/if}}
+
+<script>
+
+ function removeProduct(wishId, prodId) {
+  Swal.fire({
+    title: 'Remove Product',
+    text: 'Are you sure you want to remove this product from your Wishlist?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: '/remove-from-wishlist',
+        data: {
+          id: wishId,
+          product: prodId,
+        },
+        method: 'post',
+        success: (response) => {
+          Swal.fire({
+            title: 'Product Removed',
+            text: 'Product removed from Wishlist',
+            icon: 'success'
+          }).then(() => {
+            location.reload();
+          });
+        }
+      });
+    }
+  });
+}
+
+
+</script>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 5rem auto;
+      padding-bottom: 2rem;
+    }
+
+    .btn {
+      border-radius: 0;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .table-responsive {
+      border: none;
+    }
+
+    .table {
+      font-size: 14px;
+    }
+
+    .table thead th {
+      font-weight: bold;
+      vertical-align: middle;
+      color: #fff;
+      background-color: #343a40;
+      border-color: #343a40;
+    }
+
+    .table tbody td {
+      vertical-align: middle;
+    }
+
+    h3 {
+      margin-top: 5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h3>Orders</h3>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search by product or address">
+      <button id="searchButton">Search</button>
+    </div>
+    <div class="table-container">
+      <table class="table mt-4" id="productsTable">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">➩</th>
+            <th>Product</th>
+            <th scope="col">Date</th>
+            <th scope="col">Address</th>
+            <th scope="col">Total</th>
+            <th scope="col">Payment</th>
+            <th scope="col">Status</th>
+            <th>Options</th>
+          </tr>
+        </thead>
+        <tbody id="order-list">
+          {{#each usersOrders}}
+          <tr class="order-container">
+            <th scope="row">.</th>
+            {{#each products}}
+            <td>{{this.itemName}}</td>
+            {{/each}}
+            <td>{{this.date}}</td>
+            <td>{{this.deliveryDetails.address}}</td>
+            <td>{{this.totalAmount}}</td>
+            <td>{{this.paymentMethod}}</td>
+            <td>{{this.status}}</td>
+            <td>
+              <div class="btn-group">
+                {{#if (eq this.status "placed")}}
+                  <a href="/admin/status-change?id={{this._id}}&&st=Shipped" id="shipped-btn" class="btn btn-success">Shipped</a>
+                {{/if}}
+                {{#if (eq this.status "Shipped")}}
+                  <a href="/admin/status-change?id={{this._id}}&&st=Delivered" class="btn btn-success" onclick="return confirmDelivery('{{this.username}}')">Delivered</a>
+                {{/if}}
+              </div>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const searchButton = document.getElementById('searchButton');
+    const searchInput = document.getElementById('searchInput');
+    const table = document.getElementById('productsTable');
+    const tableRows = table.getElementsByTagName('tr');
+
+    searchButton.addEventListener('click', () => {
+      const searchText = searchInput.value.toLowerCase();
+      for (let i = 1; i < tableRows.length; i++) {
+        const row = tableRows[i];
+        const cells = row.getElementsByTagName('td');
+        let match = false;
+        for (let j = 0; j < cells.length; j++) {
+          const cellText = cells[j].textContent.toLowerCase();
+          if (cellText.includes(searchText)) {
+            match = true;
+            break;
+          }
+        }
+        row.style.display = match ? '' : 'none';
+      }
+    });
+
+    document.getElementById('shipped-btn').addEventListener('click', function (event) {
+      event.preventDefault(); // Prevent the default behavior of the link
+
+      // Display the confirmation dialog using SweetAlert
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to mark this order as shipped?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, mark as shipped',
+        cancelButtonText: 'No, cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // If the user confirms, redirect to the status change URL
+          window.location.href = event.target.href;
+        }
+      });
+    });
+
+    function confirmDelivery(username) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `Are you sure you want to mark ${username} as Delivered?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, deliver it'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: 'Product successfully delivered.',
+            icon: 'success'
+          });
+          return true;  // Allow the link to be followed
+        } else {
+          return false; // Cancel the link navigation
+        }
+      });
+    }
+
+
+
+  </script>
+</body>
+</html>

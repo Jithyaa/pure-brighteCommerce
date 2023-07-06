@@ -1,0 +1,487 @@
+<style>
+  body {
+    background-color: rgba(21, 21, 21, 1);
+  }
+  .row {
+    margin-top: 100px; /* Add margin to the top */
+  }
+  
+</style>
+<div class="row">
+  <!-- Existing Addresses Section -->
+  <div class="col-md-6 mb-4">
+    <div class="card mb-4">
+      <div class="card-header py-3" style="background-color: rgba(21, 21, 21, 1);">
+        <h5 class="mb-0" style="color: white;">Existing Addresses</h5>
+      </div>
+      <div class="card-body" style="background-color: rgba(21, 21, 21, 1);">
+        <!-- Address Cards -->
+        <div class="row" style="background-color: rgba(21, 21, 21, 1);">
+           {{#each userAddresses}}
+          <!-- Address 1 -->
+          <div class="col-md-12 ">
+            <div class="card h-70" style="background-color: rgb(52 51 51)">
+              <div class="card-body mb-3">
+                     
+              <label class="form-check-label" for="address{{this.userId}}">
+                <h4 class="card-title" style="color: white;">{{this.address.name}}</h4>
+                <p class="card-text" style="color: white;">Address: {{this.address.address}}</p>
+                 <h5 class="card-text" style="color: white;">mobile: {{this.address.phone}}</h5>
+              </label>
+           <div>
+  <div class="d-flex justify-content-end" role="group" aria-label="Address Actions">
+    <a href="/use_address?id={{this._id}}" class="btn btn-success">Use </a>
+    <a href="/delete-address?id={{this._id}}" class="btn btn-danger ml-3">Delete</a>
+  </div>
+</div>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+
+        <!-- Add New Address Button -->
+        <div class="row">
+          <div class="col-md-12 mb-6">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add New Address</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{!-- coupon --}}
+ {{!-- {{#if user.couponCodes}} --}}
+ <div style="background-color: rgba(21, 21, 21, 1);" class="card-body d-flex justify-content-center">
+               <div style="" class="form-outline d-flex justify-content-end">
+                      <form action="">
+                        {{!-- <input type="text" id="form1" class="form-control form-control-lg" /> --}}
+                        <label  for="coupon" style="color: azure;"><strong>Apply Coupon:</strong></label>
+                        <select style="width: 20rem;" class="form-control input-lg " id="coupon" name="coupon">
+                           
+                          {{#each user.couponCodes}}
+                          <option>{{this.coupon}}</option>
+                          {{/each}}
+                          <!-- Add more options for additional coupons -->
+                        </select>
+                        <div class="row mt-3">
+                          <div  class="col">
+                            <button type="button" onclick="applyCoupon()"
+                              class="btn btn-outline-success btn-lg btn-block ">Apply</button>
+                          </div>
+                        </div>
+                      </form>
+                      {{!-- {{/if}} --}}
+                      
+                    </div>
+                    </div>
+                   
+{{!-- coupon --}}
+    {{!-- wallet start --}}
+              <div class="card mb-4 mt-4" style="width:500px; margin-left: 80px;">
+               <div style="background-color:  rgb(41, 40, 40);" class="card-header py-3 d-flex justify-content-center ">
+    
+                <h5 style="color: #ffffff;" class="mb-0">Wallet</h5>
+             </div>
+          <div style="background-color:rgba(21, 21, 21, 1); color: #000000;" class="balance ">
+                      <h5 class="ml-3 mt-4 d-flex justify-content-center" style="color: azure;"> Wallet Balance: ₹ <span class="balance" id="wallet"
+                          name="wallet">{{user.walletAmount}}</span>
+                      </h5>
+                      <div class=" container d-flex justify-content-center"><button type="button" onclick="walletApply('{{user._id}}', '{{user.walletAmount}}')"
+                        class="btn btn-outline-success btn-md btn-block" style="width: 147px; margin-left:;">Use Wallet</button></div>
+                      
+    
+   
+                    </div>
+                  </div>
+          {{!-- wallet end --}}
+  </div>
+  
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+ 
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">Add New Address</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="modal-form" action="/add-new-address" method="post">
+        
+            <input type="text" id="fullName" name="name" class="form-control" required />
+            <label class="form-label" style="color: black;">Full name</label>          
+            <input type="text" id="address" name="address" class="form-control" required />
+            <label class="form-label" style="color: black;">Address</label>          
+            <input type="text" id="pincode" name="pincode" class="form-control" required />
+            <label class="form-label" style="color: black;">Pincode</label>          
+            <input type="text" id="mobile" name="mobile" class="form-control" required />
+            <label class="form-label" style="color: black;">Mobile number</label>   
+            <input type="text" name="userId" value="{{user._id}}" hidden>       
+      </div>    
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save Address</button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+
+
+{{#if userAddress}}
+  <!-- Summary and Add Address Section -->
+  <div class="col-md-6 mb-4">
+    <div class="card mb-4">
+      <div class="card-header py-3" style="background-color: rgba(21, 21, 21, 1);">
+        <h5 class="mb-0" style="color: white;">Address details</h5>
+      </div>
+      <div class="card-body" style="background-color: rgba(21, 21, 21, 1);">
+        <!-- Add Address Form -->
+        <form  action="" id="checkout-form">
+          <div class="form-outline mb-4">
+            <input type="text" id="fullName" name="name" class="form-control " value="{{userAddress.address.name}}" required />
+            <label class="form-label" style="color: white;">Full name</label>
+          </div>
+          <div class="form-outline mb-4">
+            <input type="text" id="address" name="address" class="form-control" value="{{userAddress.address.address}}" required />
+            <label class="form-label" style="color: white;">Address</label>
+          </div>
+         
+            <div class="form-outline mb-4">
+            <input type="number" id="pincode" name="pincode" class="form-control" value="{{userAddress.address.pincode}}" required />
+            <label class="form-label" style="color: white;">Pincode</label>
+          </div>
+          <div class="form-outline mb-4">
+            <input type="number" id="mobile" name="mobile" class="form-control" value="{{userAddress.address.phone}}" required />
+            <label class="form-label" style="color: white;">Mobile Number</label>
+            <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+          </div>
+          
+          <div class="col-md-6 mb-4 ms-auto">
+            <div class="card mb-4">
+              <div class="card-header py-3" style="background-color: rgba(21, 21, 21, 1);">
+                <h5 class="mb-0" style="color:white">Summary</h5>
+              </div>
+              <div class="card-body"  style="background-color: rgba(21, 21, 21, 1);">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0" style="background-color: rgba(21, 21, 21, 1); color:white">
+                    Shipping
+                    <span>Free</span>
+                  </li>
+                  <!-- Payment Methods -->
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0" style="background-color: rgba(21, 21, 21, 1); color:white">
+                    Payment Method
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="payment-method" value="COD" checked>
+                      <label class="form-check-label" >
+                        COD
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="payment-method"  value="ONLINE">
+                      <label class="form-check-label">
+                        Online 
+                      </label>
+                    </div>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3" style="background-color: rgba(21, 21, 21, 1); color:white">
+                    <div>
+                      <strong>Total amount</strong>
+                      <strong>
+                        <p class="mb-0">(including GST)</p>
+                      </strong>
+                    </div>
+                    {{!-- <span><strong>Rs{{total}}</strong></span> --}}
+                    <strong>Rs.<span id="total">{{total}}</span></strong>
+                  </li>
+                   <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 " style="background-color: rgba(21, 21, 21, 1); color:white">
+                <div>
+                  <strong>DISCOUNT:</strong>
+                </div>
+                <div>
+                  <strong>Rs. <span id="discount">0</span></strong>
+                </div>
+              </li>
+
+              <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3 " style="background-color: rgba(21, 21, 21, 1); color:white">
+                <div>
+                  <strong>PAYABLE AMOUNT:</strong>
+                </div>
+                <div>
+                  <strong>Rs. <span id="totalPrice">{{total}}</span></strong>
+                </div>
+              </li>
+                </ul>
+
+                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                  Place Order
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{{else}}
+<div class="col-md-6 mb-4">
+    <div class="card mb-4">
+      <div class="card-header py-3" style="background-color: rgba(21, 21, 21, 1);">
+        <h5 class="mb-0" style="color: white;">Address details</h5>
+      </div>
+      <div class="card-body" style="background-color: rgba(21, 21, 21, 1);">
+        <!-- Add Address Form -->
+        <form  action="" id="checkout-form">
+          <div class="form-outline mb-4">
+            <input type="text" id="fullName" name="fullname" class="form-control" required />
+            <label class="form-label" style="color: white;">Full name</label>
+          </div>
+          <div class="form-outline mb-4">
+            <input type="text" id="address" name="address" class="form-control" required />
+            <label class="form-label" style="color: white;">Address</label>
+          </div>
+         
+            <div class="form-outline mb-4">
+            <input type="number" id="pincode" name="pincode" class="form-control" required />
+            <label class="form-label" style="color: white;">Pincode</label>
+          </div>
+          <div class="form-outline mb-4">
+            <input type="number" id="mobile" name="mobile" class="form-control" required />
+            <label class="form-label" style="color: white;">Mobile Number</label>
+            <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+          </div>
+          
+          <div class="col-md-6 mb-4 ms-auto">
+            <div class="card mb-4">
+              <div class="card-header py-3" style="background-color: rgba(21, 21, 21, 1);">
+                <h5 class="mb-0" style="color:white">Summary</h5>
+              </div>
+              <div class="card-body"  style="background-color: rgba(21, 21, 21, 1);">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0" style="background-color: rgba(21, 21, 21, 1); color:white">
+                    Shipping
+                    <span>Free</span>
+                  </li>
+                  <!-- Payment Methods -->
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0" style="background-color: rgba(21, 21, 21, 1); color:white">
+                    Payment Method
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="payment-method" value="COD" checked>
+                      <label class="form-check-label" >
+                        COD
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="payment-method"  value="ONLINE">
+                      <label class="form-check-label">
+                        Online 
+                      </label>
+                    </div>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3" style="background-color: rgba(21, 21, 21, 1); color:white">
+                    <div>
+                      <strong>Total amount</strong>
+                      <strong>
+                        <p class="mb-0">(including GST)</p>
+                      </strong>
+                    </div>
+                   <strong>Rs. <span id="totalPrice">{{total}}</span></strong>
+                  </li>
+                </ul>
+
+                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                  Place Order
+                </button>
+              </div>
+            </div>
+          </div>
+             
+        </form>
+     
+      </div>
+      
+    </div>
+    {{/if}}
+  </div>
+</div>
+</div>
+</div>
+ 
+<script>
+ const form = document.getElementById('checkout-form');
+
+form.addEventListener('submit', function (event) {
+  event.preventDefault();
+
+  if (form.checkValidity()) {
+    // Form is valid, perform form submission or further processing
+    Swal.fire({
+      icon: 'success',
+      title: 'Form Submitted Successfully',
+      text: 'Redirecting...',
+      timer: 4000, // Automatically close the alert after 2 seconds
+      showConfirmButton: false
+    }).then(() => {
+      // Perform form submission or further processing here
+      location.href = '/order-success';
+    });
+  } else {
+    // Form is invalid, show error message
+    Swal.fire({
+      icon: 'error',
+      title: 'Form Validation Error',
+      text: 'Please fill in all the required fields'
+    });
+  }
+});
+
+$("#checkout-form").submit((e) => {
+  e.preventDefault();
+  $.ajax({
+    url: '/place-order',
+    method: 'post',
+    data: $('#checkout-form').serialize(),
+    success: (response) => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Are you sure?',
+        showCancelButton: true,
+        confirmButtonText: 'Continue Payment',
+        cancelButtonText: 'Cancel',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (response.codSuccess) {
+            location.href = '/order-success';
+          } else {
+            razorpayPayment(response);
+          }
+        }
+      });
+    }
+  });
+});
+
+function razorpayPayment(order) {
+  var options = {
+    "key": "rzp_test_tTpovSbQmrfVAw", // Enter the Key ID generated from the Dashboard
+    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Pure Bright",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response) {
+      verifyPayment(response, order);
+    },
+    "prefill": {
+      "name": "Gaurav Kumar",
+      "email": "gaurav.kumar@example.com",
+      "contact": "9000090000"
+    },
+    "notes": {
+      "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+      "color": "#3399cc"
+    }
+  };
+  var rzp1 = new Razorpay(options);
+  rzp1.open();
+}
+
+ function verifyPayment(payment, order) {
+  $.ajax({
+    url: '/verify-payment',
+    data: {
+      payment,
+      order
+    },
+    method: 'post',
+    success: (response) => {
+      if (response.status) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Payment Successful',
+          text: 'Thank you for your order',
+          timer: 4000, // Automatically close the alert after 2 seconds
+          showConfirmButton: false
+        }).then(() => {
+          location.href = '/order-success';
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Payment Failed',
+          text: 'Please try again later.'
+        });
+      }
+    }
+  });
+}
+
+
+  function applyCoupon() {
+    var selectedCoupon = document.getElementById('coupon').value; // Get the selected coupon value
+
+    // Perform further actions with the selected coupon
+    console.log('Applying coupon:', selectedCoupon);
+    $.ajax({
+      url: '/apply-coupon',
+      data: {
+        coupon: selectedCoupon
+      },
+      method: 'post',
+      success: (response) => {
+
+
+        if (response.response) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Coupon Success',
+            text: 'The coupon applied successfully.',
+            toast: true,
+            position: 'center',
+            showConfirmButton: true
+          });
+          document.getElementById('discount').innerHTML = response.discountAmount
+          document.getElementById('totalPrice').innerHTML = response.newTotal
+
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Coupon Expired',
+            text: 'The coupon has expired.',
+            toast: true,
+            position: 'center',
+            showConfirmButton: true
+          });
+
+
+        }
+      }
+    })
+  }
+  function walletApply(userId, wallet) {
+
+    $.ajax({
+      url: '/use-wallet',
+      method: 'POST',
+      data: {
+        userId: userId,
+        wallet: wallet
+      },
+      success: function (response) {
+        document.getElementById('totalPrice').innerHTML = response.total
+        document.getElementById('wallet').innerHTML = response.walletBalance
+      }
+    })
+  }
+
+
+</script>

@@ -1,0 +1,113 @@
+<section style="padding-left: 100px;">
+  <div class="container">
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="text-center">Banner Management</h4>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12 text-right">
+                <a href="/admin/addBanner" class="btn btn-success">Add banner</a>
+              </div>
+            </div>
+
+            <div class="table-responsive mt-5">
+              <table class="table table-bordered table-hover" id="productsTable">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Banner</th>
+                    <th scope="col">Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each banners}}
+                  <tr>
+                    <td><img style="width: 700px; height: 200px;" src="{{this.photos.[0].fileName}}" alt=""></td>
+                    <td>
+                      <form action="/delete-banner/{{this._id}}" method="POST">
+                       <a href="/admin/delete-banner/{{this._id}}" class="btn btn-danger btn-sm" onclick="showDeleteConfirmation(event)">Delete</a>
+                      </form>
+                    </td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-bottom: 2rem;
+  }
+
+  .card {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn {
+    border-radius: 0;
+  }
+
+  .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+
+  .table-responsive {
+    border: none;
+  }
+
+  .table {
+    font-size: 14px;
+  }
+
+  .table thead th {
+    font-weight: bold;
+    vertical-align: middle;
+    color: #fff;
+    background-color: #343a40;
+    border-color: #343a40;
+  }
+
+  .table tbody td {
+    vertical-align: middle;
+  }
+</style>
+
+<script>
+  function showDeleteConfirmation(event) {
+    event.preventDefault();
+
+    Swal.fire({
+      title: 'Delete Banner',
+      text: 'Are you sure you want to delete this banner?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = event.target.href;
+      }
+    });
+  }
+</script>

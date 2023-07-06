@@ -1,0 +1,232 @@
+{{!-- <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+ <style>
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    
+  }
+
+  .btn {
+    border-radius: 0;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+
+  .table-responsive {
+    border: none;
+  }
+
+  .table {
+    font-size: 14px;
+  }
+
+  .table thead th {
+    font-weight: bold;
+    vertical-align: middle;
+    color: #fff;
+    background-color: #343a40;
+    border-color: #343a40;
+  }
+
+  .table tbody td {
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="table-container">
+      <table class="table mt-4" id="productsTable">
+
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">➩</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each users}}
+          <tr>
+            <th scope="row">.</th>
+            <td>{{this.Name}}</td>
+            <td>{{this.Email}}</td>
+            <td>
+              {{#if this.isBlocked}}
+              <a href="/admin/unblock-user/{{this._id}}" class="btn btn-primary" onclick="return confirm('Are you want to unblock {{this.Name}}?')">Unblock</a>
+              {{else}}
+              <a href="/admin/block-user/{{this._id}}" class="btn btn-danger" onclick="return confirm('Are you want to block {{this.Name}}?')">Block</a>
+              {{/if}}
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+   </table>  
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+</body>
+</html> --}}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      border-radius: 0;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .table-responsive {
+      border: none;
+    }
+
+    .table {
+      font-size: 14px;
+    }
+
+    .table thead th {
+      font-weight: bold;
+      vertical-align: middle;
+      color: #fff;
+      background-color: #343a40;
+      border-color: #343a40;
+    }
+
+    .table tbody td {
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="table-container">
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search by name or email">
+        <button id="searchButton">Search</button>
+      </div>
+      <table class="table mt-4" id="productsTable">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">➩</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each users}}
+          <tr>
+            <th scope="row">.</th>
+            <td>{{this.Name}}</td>
+            <td>{{this.Email}}</td>
+           <td>
+  {{#if this.isBlocked}}
+    <a href="/admin/unblock-user/{{this._id}}" class="btn btn-primary" onclick="showUnblockConfirmation(event, '{{this.Name}}')">Unblock</a>
+  {{else}}
+    <a href="/admin/block-user/{{this._id}}" class="btn btn-danger" onclick="showBlockConfirmation(event, '{{this.Name}}')">Block</a>
+  {{/if}}
+</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div> 
+
+  <script>
+    const searchButton = document.getElementById('searchButton');
+    const searchInput = document.getElementById('searchInput');
+    const tableRows = document.querySelectorAll('#productsTable tbody tr');
+
+    searchButton.addEventListener('click', function() {
+      const searchValue = searchInput.value.toLowerCase();
+
+      tableRows.forEach(function(row) {
+        const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+        const email = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+
+        if (name.includes(searchValue) || email.includes(searchValue)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    });
+
+
+
+     function showUnblockConfirmation(event, name) {
+    event.preventDefault();
+
+    Swal.fire({
+      title: 'Unblock User',
+      text: `Are you sure you want to unblock ${name}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = event.target.href;
+      }
+    });
+  }
+
+  function showBlockConfirmation(event, name) {
+    event.preventDefault();
+
+    Swal.fire({
+      title: 'Block User',
+      text: `Are you sure you want to block ${name}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = event.target.href;
+      }
+    });
+  }
+    
+  </script>
+</body>
+</html>
+
+
+
+
