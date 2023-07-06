@@ -327,7 +327,7 @@ async function editprodpost(req, res) {
 
 
 function loginget(req, res) {
-  console.log(req.session.admin)
+  
   if (req.session.admin) {
     res.redirect('/admin/dashboard')
   } else {
